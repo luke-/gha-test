@@ -28,7 +28,7 @@ jobs:
 
 
       - name: Install ldaputils
-        run: apt-get install ldap-utils
+        run: sudo apt update && sudo apt-get install ldap-utils
 
       - name: Test LDAP Service
         run: ldapwhoami -H ldap://localhost:1389 -D cn=admin,dc=example,dc=org -w secret

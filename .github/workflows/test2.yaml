@@ -26,6 +26,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+
+      - name: Install ldaputils
+        run: apt-get install ldap-utils
+
+      - name: Test LDAP Service
+        run: ldapwhoami -H ldap://localhost:1389 -D cn=admin,dc=example,dc=org -w secret
+      
       - name: Test
         uses: docker://bitnami/openldap
         with:

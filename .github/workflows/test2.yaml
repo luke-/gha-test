@@ -1,0 +1,55 @@
+on:
+  - pull_request
+  - push
+
+name: test2
+
+jobs:
+  tests:
+    name: Test
+
+    env:
+      extensions: fileinfo, ldap, intl, pdo_sqlite
+
+    runs-on: ubuntu-latest
+
+    services:
+      ldap:
+        image: bitnami/openldap
+        ports:
+          - 1389:1389
+        env:
+          LDAP_CONFIG_ADMIN_ENABLED: true
+          LDAP_ADMIN_USERNAME: admin
+          LDAP_ADMIN_PASSWORD: secret
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: docker://bitnami/openldap
+        with:
+          entrypoint: /bin/bash
+          args: -c "(ldapwhoami -H ldap://localhost:1389 -D cn=admin,dc=example,dc=org -w secret||sleep 30)"
+
+      - name: Test
+        uses: docker://bitnami/openldap
+        with:
+          entrypoint: /bin/bash
+          args: -c "(ldapwhoami -H ldap://localhost:11389 -D cn=admin,dc=example,dc=org -w secret||sleep 5)"
+
+
+      - name: Start PWD
+        run: |
+          pwd
+      - name: Start Check
+        run: |
+          docker ps
+      - name: Start Check
+        run: |
+          docker ps
+      - name: Test2
+        uses: docker://bitnami/openldap
+        with:
+          entrypoint: /bin/bash
+          args: -c "(ldapwhoami -H ldap://localhost:1389 -D cn=admin,dc=example,dc=org -w secret||sleep 30)"
